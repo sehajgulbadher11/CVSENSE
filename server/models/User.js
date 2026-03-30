@@ -20,6 +20,9 @@ const User = sequelize.define('User', {
     type: DataTypes.STRING,
     allowNull: false,
   },
+}, {
+  freezeTableName: true,
+  tableName: 'Users'
 });
 
 module.exports = User;

@@ -1,0 +1,33 @@
+[dotenv@17.3.1] injecting env (6) from .env -- tip: ⚙️  write to custom object with { processEnv: myObject }
+[dotenv@17.3.1] injecting env (0) from .env -- tip: 🛠️  run anywhere with `dotenvx run -- yourcommand`
+Server is running on port 5001
+Database connection has been established successfully.
+Database & tables created/synced!
+Client connected: 3Heb_8ypjprGARmAAAAB
+Client disconnected: 3Heb_8ypjprGARmAAAAB
+Client connected: aPHOqmnmZdVSd7LLAAAE
+Client disconnected: aPHOqmnmZdVSd7LLAAAE
+Client connected: matHjOT_bW0opIEFAAAG
+Client disconnected: matHjOT_bW0opIEFAAAG
+Client connected: ciB3uPbFcNHeoRv5AAAJ
+Warning: Setting up fake worker.
+Warning: Unsupported: field.type of Link
+Warning: NOT valid form element
+Warning: Unsupported: field.type of Link
+Warning: NOT valid form element
+Warning: Unsupported: field.type of Link
+Warning: NOT valid form element
+Warning: Unsupported: field.type of Link
+Warning: NOT valid form element
+Client disconnected: ciB3uPbFcNHeoRv5AAAJ
+Client connected: EwE9tD4rgrFsb4cKAAAM
+Client disconnected: EwE9tD4rgrFsb4cKAAAM
+Client connected: 8aXn9rvNTrVN0G4XAAAP
+Client disconnected: 8aXn9rvNTrVN0G4XAAAP
+Client connected: FBM-PvLnfVNvHtRrAAAS
+Client disconnected: FBM-PvLnfVNvHtRrAAAS
+Client connected: VCpD8Hdbb8lJkT0LAAAV
+Client disconnected: VCpD8Hdbb8lJkT0LAAAV
+Client connected: e7or-OWCDaGbQ-o9AAAY
+Client disconnected: e7or-OWCDaGbQ-o9AAAY
+Client connected: i5RGvIE49r_Yl7xiAAAb

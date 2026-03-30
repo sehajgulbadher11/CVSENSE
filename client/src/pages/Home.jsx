@@ -1,9 +1,10 @@
-import { Suspense, useRef, useState } from 'react';
+import { Suspense, useRef, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
 import { Environment, Float, PresentationControls, ContactShadows } from '@react-three/drei';
 import { motion } from 'framer-motion';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
+import { useStore } from '../store/useStore';
 
 // A simple abstract 3D component representing a "document" or "resume"
 function DocumentNode(props) {
@@ -11,8 +12,10 @@ function DocumentNode(props) {
   const [hovered, setHover] = useState(false);
 
   useFrame((state, delta) => {
-    meshRef.current.rotation.y += delta * 0.2;
-    meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
+    if (meshRef.current) {
+      meshRef.current.rotation.y += delta * 0.2;
+      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.5) * 0.2;
+    }
   });
 
   return (
@@ -54,6 +57,15 @@ function DocumentNode(props) {
 }
 
 export default function Home() {
+  const { user } = useStore();
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  // Delay the 3D mount slightly to avoid conflicts with page transitions
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoaded(true), 100);
+    return () => clearTimeout(timer);
+  }, []);
+
   return (
     <div className="relative min-h-[90vh] flex flex-col md:flex-row items-center justify-center container mx-auto px-4 py-12">
       
@@ -72,17 +84,19 @@ export default function Home() {
         </h1>
         
         <p className="text-lg md:text-xl text-white/70 max-w-xl mx-auto md:mx-0 leading-relaxed">
-          ResumeIQ uses advanced ATS logic to analyze your resume against real job descriptions. 
+          CVSense uses advanced ATS logic to analyze your resume against real job descriptions. 
           Discover missing skills, optimize your keywords, and land your dream job faster.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start pt-4">
           <Link to="/upload" className="btn-primary text-lg px-8 py-4">
-            Start Free Analysis
+            {user ? 'Go to Tracker' : 'Start Free Analysis'}
           </Link>
-          <Link to="/login" className="px-8 py-4 rounded-lg font-semibold border border-white/20 hover:bg-white/5 transition-colors text-white text-lg flex items-center justify-center">
-            Sign In
-          </Link>
+          {!user && (
+            <Link to="/login" className="px-8 py-4 rounded-lg font-semibold border border-white/20 hover:bg-white/5 transition-colors text-white text-lg flex items-center justify-center">
+              Sign In
+            </Link>
+          )}
         </div>
       </motion.div>
 
@@ -94,25 +108,38 @@ export default function Home() {
         transition={{ duration: 1, delay: 0.2 }}
       >
         <Suspense fallback={<div className="flex items-center justify-center w-full h-full text-white/50">Loading 3D Engine...</div>}>
-          <Canvas camera={{ position: [0, 0, 8], fov: 45 }}>
-            <ambientLight intensity={0.5} />
-            <spotLight position={[10, 10, 10]} intensity={1.5} penumbra={1} castShadow />
-            <pointLight position={[-10, -10, -10]} intensity={0.5} />
-            
-            <PresentationControls
-              global
-              config={{ mass: 2, tension: 500 }}
-              snap={{ mass: 4, tension: 1500 }}
-              rotation={[0, -0.3, 0]}
-              polar={[-Math.PI / 3, Math.PI / 3]}
-              azimuth={[-Math.PI / 1.4, Math.PI / 2]}
+          {isLoaded && (
+            <Canvas 
+              flat
+              shadows
+              dpr={[1, 2]} 
+              camera={{ position: [0, 0, 8], fov: 45 }}
+              gl={{ 
+                antialias: true, 
+                alpha: true,
+                powerPreference: "high-performance",
+                outputColorSpace: THREE.SRGBColorSpace
+              }}
             >
-              <DocumentNode position={[0, 0, 0]} />
-            </PresentationControls>
+              <ambientLight intensity={1} />
+              <spotLight position={[10, 10, 10]} intensity={2} penumbra={1} castShadow />
+              <pointLight position={[-10, -10, -10]} intensity={1} />
+              
+              <PresentationControls
+                global
+                config={{ mass: 2, tension: 500 }}
+                snap={{ mass: 4, tension: 1500 }}
+                rotation={[0, -0.3, 0]}
+                polar={[-Math.PI / 3, Math.PI / 3]}
+                azimuth={[-Math.PI / 1.4, Math.PI / 2]}
+              >
+                <DocumentNode position={[0, 0, 0]} />
+              </PresentationControls>
 
-            <ContactShadows position={[0, -3.5, 0]} opacity={0.4} scale={10} blur={2.5} far={4} />
-            <Environment preset="city" />
-          </Canvas>
+              <ContactShadows position={[0, -3.5, 0]} opacity={0.4} scale={10} blur={2.5} far={4} />
+              <Environment preset="night" />
+            </Canvas>
+          )}
         </Suspense>
       </motion.div>
 

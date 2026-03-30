@@ -24,6 +24,9 @@ const Resume = sequelize.define('Resume', {
     type: DataTypes.TEXT('long'),
     allowNull: true,
   },
+}, {
+  freezeTableName: true,
+  tableName: 'Resumes'
 });
 
 Resume.belongsTo(User, { foreignKey: 'userId', as: 'user' });

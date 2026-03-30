@@ -31,6 +31,9 @@ const Report = sequelize.define('Report', {
     type: DataTypes.TEXT('long'),
     allowNull: true,
   },
+}, {
+  freezeTableName: true,
+  tableName: 'Reports'
 });
 
 Report.belongsTo(Resume, { foreignKey: 'resumeId', as: 'resume' });

@@ -39,7 +39,7 @@ app.use('/api', uploadRoutes);
 app.use('/api/reports', reportRoutes);
 
 app.get('/health', (req, res) => {
-  res.json({ status: 'ok', message: 'ResumeIQ API is running.' });
+  res.json({ status: 'ok', message: 'CVSense API is running.' });
 });
 
 const PORT = process.env.PORT || 5001;
